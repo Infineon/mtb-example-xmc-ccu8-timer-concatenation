@@ -26,8 +26,9 @@
 /*******************************************************************************
 * Data Structure
 *******************************************************************************/
+
 /* Initialization data of CCU8 Slice 1 */
-const XMC_CCU8_SLICE_COMPARE_CONFIG_t COUNTER_L_compare_config =
+const XMC_CCU8_SLICE_COMPARE_CONFIG_t COUNTER_L_compare_config1 =
 {
     .timer_mode          = XMC_CCU8_SLICE_TIMER_COUNT_MODE_EA,       /*Select Edge aligned or Centre Aligned*/
     .monoshot            = XMC_CCU8_SLICE_TIMER_REPEAT_MODE_REPEAT,  /*Repetitive mode: Repeat Mode*/
@@ -48,8 +49,9 @@ const XMC_CCU8_SLICE_COMPARE_CONFIG_t COUNTER_L_compare_config =
 /*******************************************************************************
 * Data Structure
 *******************************************************************************/
+
 /* Event configuration of CCU8 Slice 1 */
-const XMC_CCU8_SLICE_EVENT_CONFIG_t COUNTER_L_event0_config =
+const XMC_CCU8_SLICE_EVENT_CONFIG_t COUNTER_L_event0_config1 =
 {
     .edge     = XMC_CCU8_SLICE_EVENT_EDGE_SENSITIVITY_FALLING_EDGE,
     .level    = XMC_CCU8_SLICE_EVENT_LEVEL_SENSITIVITY_ACTIVE_HIGH,
@@ -59,8 +61,9 @@ const XMC_CCU8_SLICE_EVENT_CONFIG_t COUNTER_L_event0_config =
 /*******************************************************************************
 * Data Structure
 *******************************************************************************/
+
 /* Initialization data of CCU8 Slice 2 */
-const XMC_CCU8_SLICE_COMPARE_CONFIG_t COUNTER_H_compare_config =
+const XMC_CCU8_SLICE_COMPARE_CONFIG_t COUNTER_H_compare_config1 =
 {
     .timer_mode          = XMC_CCU8_SLICE_TIMER_COUNT_MODE_EA,       /*Select Edge aligned or Centre Aligned*/
     .monoshot            = XMC_CCU8_SLICE_TIMER_REPEAT_MODE_REPEAT,  /*Repetitive mode: Repeat Mode*/
@@ -81,8 +84,9 @@ const XMC_CCU8_SLICE_COMPARE_CONFIG_t COUNTER_H_compare_config =
 /*******************************************************************************
 * Data Structure
 *******************************************************************************/
+
 /* Event configuration of CCU8 Slice 2 */
-const XMC_CCU8_SLICE_EVENT_CONFIG_t COUNTER_H_event0_config =
+const XMC_CCU8_SLICE_EVENT_CONFIG_t COUNTER_H_event0_config1 =
 {
     .edge     = XMC_CCU8_SLICE_EVENT_EDGE_SENSITIVITY_FALLING_EDGE,
     .level    = XMC_CCU8_SLICE_EVENT_LEVEL_SENSITIVITY_ACTIVE_HIGH,
@@ -92,8 +96,9 @@ const XMC_CCU8_SLICE_EVENT_CONFIG_t COUNTER_H_event0_config =
 /*******************************************************************************
 * Data Structure
 *******************************************************************************/
+
 /* Initialization data of CCU8 Slice 3 */
-const XMC_CCU8_SLICE_COMPARE_CONFIG_t TIMER_0_compare_config =
+const XMC_CCU8_SLICE_COMPARE_CONFIG_t TIMER_0_compare_config1 =
 {
     .timer_mode          = XMC_CCU8_SLICE_TIMER_COUNT_MODE_EA,       /*Select Edge aligned or Centre Aligned*/
     .monoshot            = XMC_CCU8_SLICE_TIMER_REPEAT_MODE_REPEAT,  /*Repetitive mode: Repeat Mode*/
@@ -138,7 +143,7 @@ void ccu8_slice_config(void)
     /* Slice configurations for COUNTER_L_HW */
 
     /* Initialization of a CCU8 slice to compare mode */
-    XMC_CCU8_SLICE_CompareInit(COUNTER_L_HW, &COUNTER_L_compare_config);
+    XMC_CCU8_SLICE_CompareInit(COUNTER_L_HW, &COUNTER_L_compare_config1);
     /* Programs the timer compare value */
     XMC_CCU8_SLICE_SetTimerCompareMatch(COUNTER_L_HW, XMC_CCU8_SLICE_COMPARE_CHANNEL_1, 32768U);
     /* Programs the timer period value */
@@ -146,12 +151,14 @@ void ccu8_slice_config(void)
     /* Enables the Multi-channel shadow transfer request */
     XMC_CCU8_SetMultiChannelShadowTransferMode(COUNTER_L_MODULE_HW, XMC_CCU8_MULTI_CHANNEL_SHADOW_TRANSFER_SW_SLICE0);
     /* Disables the cascaded shadow transfer operation */
+    #ifdef DISABLE_CASCADED_SHADOW_TRANSFER
     XMC_CCU8_SLICE_DisableCascadedShadowTransfer(COUNTER_L_HW);
+    #endif
     /* Enable Shadow transfer request mask for various transfers */
     XMC_CCU8_EnableShadowTransfer(COUNTER_L_MODULE_HW,
     XMC_CCU8_SHADOW_TRANSFER_SLICE_0 |XMC_CCU8_SHADOW_TRANSFER_DITHER_SLICE_0 |XMC_CCU8_SHADOW_TRANSFER_PRESCALER_SLICE_0 );
     /* Configures an External Event of the slice */
-    XMC_CCU8_SLICE_ConfigureEvent(COUNTER_L_HW, XMC_CCU8_SLICE_EVENT_0, &COUNTER_L_event0_config);
+    XMC_CCU8_SLICE_ConfigureEvent(COUNTER_L_HW, XMC_CCU8_SLICE_EVENT_0, &COUNTER_L_event0_config1);
     /* Configures the Count Function of the slice */
     XMC_CCU8_SLICE_CountConfig(COUNTER_L_HW, XMC_CCU8_SLICE_EVENT_0);
     /* Enables the slice timer clock */
@@ -162,7 +169,7 @@ void ccu8_slice_config(void)
     /* Slice configurations for COUNTER_H_HW */
 
     /* Initialization of a CCU8 slice to compare mode */
-    XMC_CCU8_SLICE_CompareInit(COUNTER_H_HW, &COUNTER_H_compare_config);
+    XMC_CCU8_SLICE_CompareInit(COUNTER_H_HW, &COUNTER_H_compare_config1);
     /* Programs the timer compare value */
     XMC_CCU8_SLICE_SetTimerCompareMatch(COUNTER_H_HW, XMC_CCU8_SLICE_COMPARE_CHANNEL_1, 32768U);
     /* Programs the timer period value */
@@ -170,12 +177,14 @@ void ccu8_slice_config(void)
     /* Enables the Multi-channel shadow transfer request */
     XMC_CCU8_SetMultiChannelShadowTransferMode(COUNTER_H_MODULE_HW, XMC_CCU8_MULTI_CHANNEL_SHADOW_TRANSFER_SW_SLICE1);
     /* Disables the cascaded shadow transfer operation */
+    #ifdef DISABLE_CASCADED_SHADOW_TRANSFER
     XMC_CCU8_SLICE_DisableCascadedShadowTransfer(COUNTER_H_HW);
+    #endif
     /* Enable Shadow transfer request mask for various transfers */
     XMC_CCU8_EnableShadowTransfer(COUNTER_H_MODULE_HW,
     XMC_CCU8_SHADOW_TRANSFER_SLICE_1 |XMC_CCU8_SHADOW_TRANSFER_DITHER_SLICE_1 |XMC_CCU8_SHADOW_TRANSFER_PRESCALER_SLICE_1 );
     /* Configures an External Event of the slice */
-    XMC_CCU8_SLICE_ConfigureEvent(COUNTER_H_HW, XMC_CCU8_SLICE_EVENT_0, &COUNTER_H_event0_config);
+    XMC_CCU8_SLICE_ConfigureEvent(COUNTER_H_HW, XMC_CCU8_SLICE_EVENT_0, &COUNTER_H_event0_config1);
     /* Configures the Count Function of the slice */
     XMC_CCU8_SLICE_CountConfig(COUNTER_H_HW, XMC_CCU8_SLICE_EVENT_0);
     /* Enables the slice timer clock */
@@ -186,15 +195,17 @@ void ccu8_slice_config(void)
     /* Slice configurations for TIMER_0_HW */
 
     /* Initialization of a CCU8 slice to compare mode */
-    XMC_CCU8_SLICE_CompareInit(TIMER_0_HW, &TIMER_0_compare_config);
+    XMC_CCU8_SLICE_CompareInit(TIMER_0_HW, &TIMER_0_compare_config1);
     /* Programs the timer compare value */
-    XMC_CCU8_SLICE_SetTimerCompareMatch(TIMER_0_HW, XMC_CCU8_SLICE_COMPARE_CHANNEL_1, 48U);
+    XMC_CCU8_SLICE_SetTimerCompareMatch(TIMER_0_HW, XMC_CCU8_SLICE_COMPARE_CHANNEL_1, TIMER_COMPARE_VALUE);
     /* Programs the timer period value */
-    XMC_CCU8_SLICE_SetTimerPeriodMatch(TIMER_0_HW, 96U);
+    XMC_CCU8_SLICE_SetTimerPeriodMatch(TIMER_0_HW, TIMER_PERIOD_VALUE);
     /* Enables the Multi-channel shadow transfer request */
     XMC_CCU8_SetMultiChannelShadowTransferMode(TIMER_0_MODULE_HW, XMC_CCU8_MULTI_CHANNEL_SHADOW_TRANSFER_SW_SLICE2);
     /* Disables the cascaded shadow transfer operation */
+    #ifdef DISABLE_CASCADED_SHADOW_TRANSFER
     XMC_CCU8_SLICE_DisableCascadedShadowTransfer(TIMER_0_HW);
+    #endif
     /* Enable Shadow transfer request mask for various transfers */
     XMC_CCU8_EnableShadowTransfer(TIMER_0_MODULE_HW,
     XMC_CCU8_SHADOW_TRANSFER_SLICE_2 |XMC_CCU8_SHADOW_TRANSFER_DITHER_SLICE_2 |XMC_CCU8_SHADOW_TRANSFER_PRESCALER_SLICE_2 );
