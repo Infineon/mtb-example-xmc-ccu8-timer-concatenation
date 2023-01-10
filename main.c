@@ -36,12 +36,11 @@
 * DEALINGS IN THE SOFTWARE.
 *
 *****************************************************************************/
+
 #include <stdio.h>
 #include "cybsp.h"
 #include "cy_utils.h"
 #include "cy_retarget_io.h"
-#include "xmc_ccu8.h"
-#include "ccu8_slice_config.h"
 
 /*******************************************************************************
 * Macros
@@ -117,6 +116,7 @@ static uint32_t sys_now(void)
 *  int
 *
 *******************************************************************************/
+
 int main(void)
 {
     cy_rslt_t result;
@@ -137,18 +137,6 @@ int main(void)
 
     /* Initialize retarget-io to use the debug UART port */
     cy_retarget_io_init(CYBSP_DEBUG_UART_HW);
-
-    ccu8_slice_config();
-
-    /* Assign input signal for count function */
-    XMC_CCU8_SLICE_SetInput(COUNTER_H_HW, XMC_CCU8_SLICE_EVENT_0, CCU80_IN0_CCU80_ST2);
-    XMC_CCU8_SLICE_SetInput(COUNTER_L_HW, XMC_CCU8_SLICE_EVENT_0, CCU80_IN0_CCU80_ST2);
-
-    /* Start CCU80 slices */
-    XMC_CCU8_SLICE_StartTimer(COUNTER_H_HW);
-    XMC_CCU8_SLICE_StartTimer(COUNTER_L_HW);
-    XMC_CCU8_SLICE_StartTimer(TIMER_0_HW);
-
 
     #if ENABLE_XMC_DEBUG_PRINT
     printf("Initialization done\r\n");
